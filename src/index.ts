@@ -6,10 +6,11 @@
 import { Command } from 'commander';
 import { installWidget } from './commands/install';
 import { updateWidget } from './commands/update';
+import { searchWidgets } from './commands/search';
+import { removeWidget } from './commands/remove';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-// Dynamically load the version from your package.json so you don't have to hardcode it
 const packageJsonPath = path.join(__dirname, '../package.json');
 const packageJson = fs.readJsonSync(packageJsonPath, { throws: false }) || { version: '1.0.0' };
 
@@ -49,6 +50,29 @@ program
   .action(() => {
     console.log('Listing widgets is not yet implemented, but coming soon!');
     // Future logic: scan the client/your-extensions/widgets folder and print the names
+  });
+
+// --- COMMAND: SEARCH ---
+program
+  .command('search')
+  .alias('s')
+  .description('Search npm for Experience Builder widgets (by keyword)')
+  .option('-k, --keyword <keyword>', 'Additional keyword to include in search')
+  .option('-n, --size <size>', 'Maximum number of npm results to fetch (default: 15)')
+  .option('--github-list', 'Include results from a curated GitHub list when available')
+  .action(async (options) => {
+    const size = options.size ? Number(options.size) : undefined;
+    await searchWidgets({ keyword: options.keyword, size, githubList: options.githubList });
+  });
+
+// --- COMMAND: REMOVE ---
+program
+  .command('remove <package>')
+  .alias('rm')
+  .description('Remove an installed widget from your Experience Builder project')
+  .option('-f, --force', 'Skip confirmation prompt')
+  .action(async (pkg: string, options) => {
+    await removeWidget(pkg, { force: options.force });
   });
 
 // Parse the arguments passed by the user in the terminal

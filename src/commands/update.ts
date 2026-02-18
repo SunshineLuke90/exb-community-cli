@@ -30,6 +30,7 @@ export async function updateWidget(packageName: string, options: UpdateOptions =
 
   try {
     console.log(`Fetching ${spec}...`);
+    const incomingPkg = await pacote.manifest(spec);
     await pacote.extract(spec, tempDir);
 
     const { pkgContentPath, manifestPath: newManifestPath } = await resolveManifest(tempDir);
@@ -37,31 +38,36 @@ export async function updateWidget(packageName: string, options: UpdateOptions =
     const newManifest: ExBManifest = await fs.readJson(newManifestPath);
     const installedDir = path.join(extensionsDir, newManifest.name);
     const installedManifestPath = path.join(installedDir, 'manifest.json');
+    const installedPkgJsonPath = path.join(installedDir, 'package.json');
 
     if (!(await fs.pathExists(installedManifestPath))) {
       throw new Error(`Widget ${newManifest.name} is not installed; cannot update.`);
     }
 
     const currentManifest: ExBManifest = await fs.readJson(installedManifestPath);
+    const currentPkgJson = (await fs.pathExists(installedPkgJsonPath)) ? await fs.readJson(installedPkgJsonPath) : null;
 
-    const currentVersion = semver.valid(currentManifest.version);
-    const incomingVersion = semver.valid(newManifest.version);
+    const currentVersionRaw = currentPkgJson?.version ?? currentManifest.version;
+    const incomingVersionRaw = incomingPkg.version ?? newManifest.version;
+
+    const currentVersion = semver.valid(currentVersionRaw);
+    const incomingVersion = semver.valid(incomingVersionRaw);
 
     if (!currentVersion || !incomingVersion) {
-      throw new Error('Unable to compare versions; expected valid semver in manifest.json');
+      throw new Error('Unable to compare versions; expected valid semver from npm package metadata');
     }
 
     if (semver.eq(incomingVersion, currentVersion)) {
-      throw new Error(`Widget ${newManifest.name} is already at version ${currentManifest.version}.`);
+      throw new Error(`Widget ${newManifest.name} is already at version ${currentVersionRaw}.`);
     }
 
     if (semver.lte(incomingVersion, currentVersion)) {
-      throw new Error(`New version ${newManifest.version} is older than installed ${currentManifest.version}.`);
+      throw new Error(`New version ${incomingVersionRaw} is older than installed ${currentVersionRaw}.`);
     }
 
     await fs.remove(installedDir);
     await fs.move(pkgContentPath, installedDir);
-    console.log(`Updated ${newManifest.name} to ${newManifest.version}.`);
+    console.log(`Updated ${newManifest.name} to ${incomingVersionRaw}.`);
 
     await runNpmCi(installedDir, { skip: options.widgetOnly });
 
