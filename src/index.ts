@@ -5,6 +5,7 @@
 
 import { Command } from 'commander';
 import { installWidget } from './commands/install';
+import { updateWidget } from './commands/update';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
@@ -24,9 +25,20 @@ program
   .command('install <package>')
   .alias('i') // Allows users to type `exb-cli i widget-name`
   .description('Install a widget from NPM into your Experience Builder project')
-  .action(async (pkg: string) => {
-    // This calls the logic we wrote in the previous step
-    await installWidget(pkg);
+  .option('--widget-only', 'Skip running npm ci in the installed widget directory')
+  .action(async (pkg: string, options) => {
+    await installWidget(pkg, { widgetOnly: options.widgetOnly });
+  });
+
+// --- COMMAND: UPDATE ---
+program
+  .command('update <package>')
+  .alias('u')
+  .description('Update an installed widget to the latest version (or a specified version)')
+  .option('--widget-only', 'Skip running npm ci in the updated widget directory')
+  .option('--version <version>', 'Specify a version or dist-tag to update to')
+  .action(async (pkg: string, options) => {
+    await updateWidget(pkg, { widgetOnly: options.widgetOnly, version: options.version });
   });
 
 // --- COMMAND: LIST (Example for future expansion) ---
