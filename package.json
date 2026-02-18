@@ -1,0 +1,29 @@
+{
+  "name": "exb-community-cli",
+  "version": "1.0.0",
+  "description": "A lightweight command line interface to allow Experience Builder developers to quickly import widgets published as NPM pacakges.",
+  "keywords": [
+    "exb-community",
+    "cli"
+  ],
+  "bin": {
+    "exb-cli": "./dist/index.js"
+  },
+  "license": "MIT",
+  "author": "Lucius Creamer",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "commander": "^14.0.3",
+    "fs-extra": "^11.3.3",
+    "pacote": "^21.3.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^25.2.3",
+    "@types/pacote": "^11.1.8",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "ES2022",                // Compiles to modern JavaScript supported by current Node.js versions
+    "module": "CommonJS",              // The standard module system for Node.js
+    "outDir": "./dist",                // Where the compiled JavaScript will be placed
+    "rootDir": "./src",                // Where your TypeScript source files live
+    
+    /* Strict Type-Checking Options */
+    "strict": true,                    // Enables all strict type-checking options (highly recommended)
+    "noImplicitAny": true,             // Raises an error on expressions and declarations with an implied 'any' type
+    
+    /* Module Resolution Options */
+    "moduleResolution": "node",        // Tells TypeScript how to find modules in node_modules
+    "esModuleInterop": true,           // VERY IMPORTANT: Allows default imports from CommonJS modules (like fs-extra)
+    "resolveJsonModule": true,         // Allows importing and extracting types from .json files (like package.json)
+    
+    /* Advanced Options */
+    "skipLibCheck": true,              // Skips type checking of declaration files (.d.ts) to speed up compilation
+    "forceConsistentCasingInFileNames": true // Ensures cross-platform consistency (Windows vs Mac/Linux)
+  },
+  "include": [
+    "src/**/*"                         // Tells the compiler to only look inside the src folder
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
