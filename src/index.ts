@@ -42,14 +42,14 @@ program
     await updateWidget(pkg, { widgetOnly: options.widgetOnly, version: options.version });
   });
 
-// --- COMMAND: LIST (Example for future expansion) ---
+// --- COMMAND: REMOVE ---
 program
-  .command('list')
-  .alias('ls')
-  .description('List all community widgets currently installed in your project')
-  .action(() => {
-    console.log('Listing widgets is not yet implemented, but coming soon!');
-    // Future logic: scan the client/your-extensions/widgets folder and print the names
+  .command('remove <package>')
+  .alias('rm')
+  .description('Remove an installed widget from your Experience Builder project')
+  .option('-f, --force', 'Skip confirmation prompt')
+  .action(async (pkg: string, options) => {
+    await removeWidget(pkg, { force: options.force });
   });
 
 // --- COMMAND: SEARCH ---
@@ -65,17 +65,19 @@ program
     await searchWidgets({ keyword: options.keyword, size, githubList: options.githubList });
   });
 
-// --- COMMAND: REMOVE ---
+// --- COMMAND: FORMAT ---
+import { formatWidget } from './commands/format';
+
 program
-  .command('remove <package>')
-  .alias('rm')
-  .description('Remove an installed widget from your Experience Builder project')
-  .option('-f, --force', 'Skip confirmation prompt')
-  .action(async (pkg: string, options) => {
-    await removeWidget(pkg, { force: options.force });
+  .command('format <widget>')
+  .alias('fmt')
+  .description('Format a widget package according to community standards, based on the manifest.json configuration.')
+  .option('-f, --force', 'Skip prompts and overwrite package.json if present')
+  .action(async (widget: string, options) => {
+    await formatWidget(widget, { force: options.force });
   });
 
-// Parse the arguments passed by the user in the terminal
+  // Parse the arguments passed by the user in the terminal
 program.parse(process.argv);
 
 // If the user runs the CLI with no arguments, show the help menu
