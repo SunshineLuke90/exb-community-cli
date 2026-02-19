@@ -29,7 +29,7 @@ interface ValidatedResult extends NpmResult {
   label?: string;
 }
 
-const DEFAULT_KEYWORDS = ['arcgis-exb-widget', 'experience-builder-widget'];
+const DEFAULT_KEYWORDS = ['exb-widget', 'experience-builder'];
 const DEFAULT_SIZE = 15;
 
 export async function searchWidgets(options: SearchOptions = {}): Promise<void> {
