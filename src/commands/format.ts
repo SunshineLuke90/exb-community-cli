@@ -45,8 +45,8 @@ export async function formatWidget(widgetNameOrFolder: string, options: FormatOp
           manifest = m as ExBManifest;
           break;
         }
-      } catch (err) {
-        // ignore malformed manifest and continue
+      } catch (err : any) {
+        console.warn(`Warning: Failed to read manifest.json for widget candidate '${folder}': ${err.message || err}`);
       }
     }
   }
@@ -89,7 +89,6 @@ export async function formatWidget(widgetNameOrFolder: string, options: FormatOp
   // Write package.json
   await fs.writeJson(pkgPath, pkg, { spaces: 2 });
   console.log(`Wrote package.json for widget '${widgetNameOrFolder}' (version ${pkg.version}).`);
-  console.log('Next step: validate npm package name availability (will be implemented in next step).');
 }
 
 async function askForValue(promptText: string, defaultValue?: string): Promise<string | undefined> {
@@ -185,7 +184,7 @@ export async function validateAndChooseName(initial: string, force = false): Pro
           return unique;
         }
 
-        const useSuggested = await confirmPrompt(`Package name '${name}' is already taken on npm. Use suggested '${suggested}' instead? (y/N)`);
+        const useSuggested = await confirmPrompt(`Package name '${name}' is already taken on npm. Use suggested '${suggested}' instead? (y/n)`);
         if (useSuggested) {
           const finalName = (await isNameAvailable(suggested)) ? suggested : await makeUniqueName(suggested);
           return finalName;

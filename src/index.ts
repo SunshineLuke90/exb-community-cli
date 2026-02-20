@@ -8,6 +8,8 @@ import { installWidget } from './commands/install';
 import { updateWidget } from './commands/update';
 import { searchWidgets } from './commands/search';
 import { removeWidget } from './commands/remove';
+import { formatWidget } from './commands/format';
+import { scaffoldWidget } from './commands/scaffold';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
@@ -66,8 +68,6 @@ program
   });
 
 // --- COMMAND: FORMAT ---
-import { formatWidget } from './commands/format';
-
 program
   .command('format <widget>')
   .alias('fmt')
@@ -77,6 +77,15 @@ program
     await formatWidget(widget, { force: options.force });
   });
 
+// --- COMMAND: SCAFFOLD ---
+program
+  .command('scaffold <name>')
+  .alias('new')
+  .description('Scaffold a new widget package with a manifest.json and package.json, using a template from the arcgis-experience-builder-sdk-resources repository.')
+  .action(async (name: string, options) => {
+    await scaffoldWidget(name);
+  })
+  
   // Parse the arguments passed by the user in the terminal
 program.parse(process.argv);
 

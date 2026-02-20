@@ -17,7 +17,7 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test": "jest --colors"
+    "test": "jest --colors --runInBand"
   },
   "files": [
     "dist/**/*"
@@ -27,7 +27,9 @@
     "fs-extra": "^11.3.3",
     "pacote": "^21.3.1",
     "semver": "^7.7.4",
-    "validate-npm-package-name": "^7.0.2"
+    "validate-npm-package-name": "^7.0.2",
+    "degit": "^2.8.0",
+    "enquirer": "^2.3.6"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
