@@ -7,6 +7,17 @@ import { collectManifests } from '../utils/manifestCollector';
 import { validateAndChooseName } from './format';
 
 export async function scaffoldWidget(name: string): Promise<void> {
+  const rootDir = process.cwd();
+  const widgetsDir = path.join(rootDir, 'your-extensions', 'widgets');
+  if (!fs.existsSync(path.join(rootDir, 'your-extensions'))) {
+    console.error('Error: Run this from the ExB client folder.');
+    return;
+  }
+
+  if (!(await fs.pathExists(widgetsDir))) {
+    console.error('Error: No widgets folder found (your-extensions/widgets).');
+    return;
+  }
   const repoSource = "Esri/arcgis-experience-builder-sdk-resources/widgets";
 
   const tmpDir = path.join(os.tmpdir(), `exb-scaffold-${Date.now()}`);

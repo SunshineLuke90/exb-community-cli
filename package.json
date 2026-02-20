@@ -1,6 +1,6 @@
 {
   "name": "exb-community-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight command line interface to allow Experience Builder developers to quickly import widgets published as NPM pacakges.",
   "keywords": [
     "exb-community",
