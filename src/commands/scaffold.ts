@@ -4,7 +4,6 @@ import os from 'os';
 import degit from 'degit';
 import Enquirer from 'enquirer';
 import { collectManifests } from '../utils/manifestCollector';
-import { validateAndChooseName } from './format';
 
 export async function scaffoldWidget(name: string): Promise<void> {
   const rootDir = process.cwd();
@@ -61,7 +60,8 @@ export async function scaffoldWidget(name: string): Promise<void> {
       
       const manifestPath = path.join(targetPath, 'manifest.json');
       const manifest = await fs.readJson(manifestPath);
-      manifest.name = await validateAndChooseName(name);
+      //manifest.name = await validateAndChooseName(name);
+      manifest.name = name;
       await fs.writeJson(manifestPath, manifest, { spaces: 2 });
       console.log(`${chosen.manifest.label ?? chosen.manifest.name} scaffolded to ${targetPath}`);
     } catch (err: any) {

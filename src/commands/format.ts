@@ -71,7 +71,7 @@ export async function formatWidget(widgetNameOrFolder: string, options: FormatOp
   const pkg: any = {};
 
   const initialName = (manifest.name ?? (await askForValue('package name (npm-safe)'))) || '';
-  pkg.name = await validateAndChooseName(initialName, options.force);
+  pkg.name = await validateAndChooseName(initialName.toLowerCase(), options.force);
 
   pkg.version = (await askForValue('version', '1.0.0')) || '1.0.0';
   pkg.description = manifest.description ?? (await askForValue('description')) ?? '';

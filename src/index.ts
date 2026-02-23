@@ -81,7 +81,7 @@ program
 program
   .command('scaffold <name>')
   .alias('new')
-  .description('Scaffold a new widget package with a manifest.json and package.json, using a template from the arcgis-experience-builder-sdk-resources repository.')
+  .description('Scaffold a new widget package with a manifest.json, using an esri template')
   .action(async (name: string, options) => {
     await scaffoldWidget(name);
   })
