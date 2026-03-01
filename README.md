@@ -4,9 +4,11 @@ A simple, lightweight command line interface to make using Experience Builder De
 
 ## Using this CLI
 
-The ExB Community CLI has a few tools to make it easy to install, update, remove, and search for Experience Builder widgets that have been posted on NPM. Installing the CLI is as simple as running `npm i exb-community-cli` in your client directory of your Experience Builder application. To then run commands, the format is `npx exb-cli [command]`. If you don't want to prefix every command with npx, you can install the exb-community-cli globally, by running `npm i -g exb-community-cli`. For information on the commands that exist, run `npx exb-cli help`, and commands, arguments, and descriptions will be listed.
+The ExB Community CLI has a few tools to make it easy to install, update, remove, and search for Experience Builder widgets that have been posted on NPM. Installing the CLI is as simple as running `npm i exb-community-cli` in your client directory of your Experience Builder application. To then run commands, the format is `npx exb-cli [command]`. If you don't want to prefix every command with npx, you can install the exb-community-cli globally, by running `npm i -g exb-community-cli` (Recommended). For information on the commands that exist, run `npx exb-cli help`, and commands, arguments, and descriptions will be listed.
 
-When using any of the ExB Community CLI commands, the command needs to be run in the client directory of your Experience builder application. If you don't, you will get the error `Error: Run this from the ExB client folder.`.
+Additionally, this CLI makes it easy to get up and running with Experience Builder, requiring a single command to install and run Experience Builder Developer Edition, making it easier than ever to get started. Just install the CLI globally `npm-i -g exb-community-cli` and then run `exb-cli dev-setup`. The tool will give you a few prompts to get started, and you'll end up with a fully functional install.
+
+When using any of the ExB Community CLI commands, the command needs to be run in the client directory of your Experience builder application (excluding dev-setup). If you don't, you will get the error `Error: Run this from the ExB client folder.`.
 
 ## Formatting widgets for NPM (And Best Practices)
 
