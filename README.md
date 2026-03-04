@@ -23,6 +23,6 @@ To prepare your widget to be easily ingested by the ExB Community CLI, there are
 
 ## Automation
 
-If you're like me, you probably don't want to re-publish your widget manually on NPM every time that you have an update. That'd be a pain right? Well, as long as you're using GitHub, I have a solution for you. _**GitHub Actions**_. You can use GitHub Actions to automate deployment to NPM using a fairly simple process, outlined in this [Esri Community Post](TBD).
+If you're like me, you probably don't want to re-publish your widget manually on NPM every time that you have an update. That'd be a pain right? Well, as long as you're using GitHub, I have a solution for you. _**GitHub Actions**_. You can use GitHub Actions to automate deployment to NPM using a fairly simple process, and you can find an example of a GitHub action, used to publish my widgets in a monorepo approach [here](https://github.com/SunshineLuke90/widgets/blob/master/.github/workflows/publish-widgets.yml).
 
 If you are using automated deployment YAML for your Experience Builder installs, you might also want to make sure that the widgets you're using come along for the ride. This CLI has that in mind! To inline install a widget into your build pipeline, use `npx exb-community-cli install widgetname`. This will install the widget into your project. If you want to ensure that you always use the same version of the widget, simply add the version suffix ex `@1.5.3`.
