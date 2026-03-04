@@ -10,9 +10,10 @@ import { searchWidgets } from "./commands/search"
 import { removeWidget } from "./commands/remove"
 import { formatWidget } from "./commands/format"
 import { scaffoldWidget } from "./commands/scaffold"
+import { devSetup } from "./commands/dev-setup"
+import { start } from "./commands/start"
 import * as fs from "fs-extra"
 import * as path from "path"
-import { devSetup } from "./commands/dev-setup"
 
 const packageJsonPath = path.join(__dirname, "../package.json")
 const packageJson = fs.readJsonSync(packageJsonPath, { throws: false }) || {
@@ -22,14 +23,16 @@ const packageJson = fs.readJsonSync(packageJsonPath, { throws: false }) || {
 const program = new Command()
 
 program
-	.name("exb-cli")
-	.description("The community-led widget manager for ArcGIS Experience Builder")
+	.name("exb")
+	.description(
+		"The community-led widget manager for ArcGIS Experience Builder."
+	)
 	.version(packageJson.version)
 
 // --- COMMAND: INSTALL ---
 program
 	.command("install <package>")
-	.alias("i") // Allows users to type `exb-cli i widget-name`
+	.alias("i") // Allows users to type `exb i widget-name`
 	.description("Install a widget from NPM into your Experience Builder project")
 	.option(
 		"--widget-only",
@@ -42,7 +45,6 @@ program
 // --- COMMAND: UPDATE ---
 program
 	.command("update <package>")
-	.alias("u")
 	.description(
 		"Update an installed widget to the latest version (or a specified version)"
 	)
@@ -61,7 +63,6 @@ program
 // --- COMMAND: REMOVE ---
 program
 	.command("remove <package>")
-	.alias("rm")
 	.description(
 		"Remove an installed widget from your Experience Builder project"
 	)
@@ -73,7 +74,6 @@ program
 // --- COMMAND: SEARCH ---
 program
 	.command("search")
-	.alias("s")
 	.description("Search npm for Experience Builder widgets (by keyword)")
 	.option("-k, --keyword <keyword>", "Additional keyword to include in search")
 	.option(
@@ -96,7 +96,6 @@ program
 // --- COMMAND: FORMAT ---
 program
 	.command("format <widget>")
-	.alias("fmt")
 	.description(
 		"Format a widget package according to community standards, based on the manifest.json configuration."
 	)
@@ -108,7 +107,6 @@ program
 // --- COMMAND: SCAFFOLD ---
 program
 	.command("scaffold <name>")
-	.alias("new")
 	.description(
 		"Scaffold a new widget package with a manifest.json, using an esri template"
 	)
@@ -134,6 +132,13 @@ program
 		devSetup({ version })
 		//await scaffoldWidget('dev-environment', { version });
 	})
+
+program
+	.command("start")
+	.description(
+		"Start the client and server development servers for the current Experience Builder Developer Edition environment"
+	)
+	.action(start)
 
 // Parse the arguments passed by the user in the terminal
 program.parse(process.argv)

@@ -65,10 +65,11 @@ export async function devSetup(options: DevSetupOptions): Promise<void> {
 		"server"
 	)
 
-	console.log("Starting development servers in new terminal windows...")
+	console.log("Starting client and server development servers...")
 
-	openInNewTerminal(clientDir, "client")
-	openInNewTerminal(serverDir, "server")
+	// Start dev servers using util
+	const { startDevServer } = await import("../utils/startDevServer")
+	startDevServer(clientDir, serverDir)
 }
 
 const ciWithSpinner = (message: string, cwd: string): Promise<void> => {
@@ -98,65 +99,7 @@ const ciWithSpinner = (message: string, cwd: string): Promise<void> => {
 	})
 }
 
-const openInNewTerminal = (cwd: string, label: string) => {
-	const cmd = `cd "${cwd}" && npm start`
-
-	if (process.platform === "darwin") {
-		const script = `tell application "Terminal"\nactivate\ndo script "${cmd.replace(/"/g, '\\"')}"\nend tell`
-		spawn("osascript", ["-e", script], {
-			stdio: "ignore",
-			detached: true
-		}).unref()
-	} else if (process.platform === "win32") {
-		spawn("cmd.exe", ["/c", "start", "cmd.exe", "/k", cmd], {
-			cwd,
-			stdio: "ignore",
-			detached: true,
-			shell: true
-		}).unref()
-	} else {
-		// Linux: try common terminal emulators in order
-		const terminals = [
-			{
-				bin: "x-terminal-emulator",
-				args: ["-e", `bash -c '${cmd}; exec bash'`]
-			},
-			{
-				bin: "gnome-terminal",
-				args: ["--", "bash", "-c", `${cmd}; exec bash`]
-			},
-			{ bin: "konsole", args: ["-e", "bash", "-c", `${cmd}; exec bash`] },
-			{
-				bin: "xfce4-terminal",
-				args: ["-e", `bash -c '${cmd}; exec bash'`]
-			},
-			{ bin: "xterm", args: ["-e", `bash -c '${cmd}; exec bash'`] }
-		]
-
-		let launched = false
-		for (const t of terminals) {
-			try {
-				execSync(`which ${t.bin}`, { stdio: "pipe" })
-				spawn(t.bin, t.args, {
-					cwd,
-					stdio: "ignore",
-					detached: true
-				}).unref()
-				launched = true
-				break
-			} catch {
-				// not found, try next
-			}
-		}
-		if (!launched) {
-			console.log(
-				`  ⚠ No supported terminal found. Run manually: cd "${cwd}" && npm start`
-			)
-			return
-		}
-	}
-	console.log(`  ✔ Opened ${label} in a new terminal window.`)
-}
+// ...existing code...
 
 const installExperienceBuilder = async (version: string): Promise<string> => {
 	const url = `https://downloads.arcgis.com/dms/rest/download/secured/arcgis-experience-builder-${version}.zip?f=json&folder=software%2FExperienceBuilder%2F${version}`

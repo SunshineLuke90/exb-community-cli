@@ -1,7 +1,7 @@
 {
   "name": "exb-community-cli",
-  "version": "1.0.2",
-  "description": "A lightweight command line interface to allow Experience Builder developers to quickly import widgets published as NPM pacakges.",
+  "version": "1.0.3",
+  "description": "A lightweight command line interface to allow Experience Builder developers to quickly import widgets published as NPM pacakges. Developed by the Esri Community.",
   "keywords": [
     "exb-community",
     "cli",
@@ -9,7 +9,7 @@
     "widget"
   ],
   "bin": {
-    "exb-cli": "dist/index.js"
+    "exb": "dist/index.js"
   },
   "preferGlobal": true,
   "license": "MIT",
